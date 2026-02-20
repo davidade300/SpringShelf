@@ -2,6 +2,9 @@ package com.david.bookshelf.dtos.book;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para instanciação de livros
+ */
 public class BookRequest {
 
     private String title;

@@ -14,7 +14,6 @@ public class Book implements Serializable {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Chapter> chapters = new HashSet<>();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +28,15 @@ public class Book implements Serializable {
     private String isbn13;
     @Column(name = "cover_img_url")
     private String coverImgUrl;
+    @Column(columnDefinition = "TEXT")
     private String description;
+    private LocalDateTime lastUpdatedAt;
+
 
     public Book() {
     }
 
-    public Book(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description) {
+    public Book(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description, LocalDateTime lastUpdatedAt) {
         this.id = id;
         this.title = title;
         this.version = version;
@@ -45,6 +47,15 @@ public class Book implements Serializable {
         this.isbn13 = isbn13;
         this.coverImgUrl = coverImgUrl;
         this.description = description;
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     public String getDescription() {
@@ -192,4 +203,12 @@ public class Book implements Serializable {
         this.chapters.remove(chapter);
         chapter.setBook(null);
     }
+
+    public void updateDescription(String newDescription) {
+        if (newDescription.isBlank()) throw new IllegalArgumentException("Description cannot be empty");
+        this.description = newDescription;
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 }
+
+
