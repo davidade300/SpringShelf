@@ -1,7 +1,8 @@
 # SpringShelf
 
 - Este projeto é baseado na aplicação de conceitos apresentados no "livro Domain Driven Design Quickly"
-
+> Uma versão digital gratuita do livro pode ser encontrada em: https://www.infoq.com/minibooks/domain-driven-design-quickly/
+ 
 > Este reposítorio é uma versão em Java, utilizando Spring do meu repositório
 > book_queue: https://github.com/davidade300/book_queue
 
