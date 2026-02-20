@@ -29,11 +29,12 @@ public class Book implements Serializable {
     private String isbn13;
     @Column(name = "cover_img_url")
     private String coverImgUrl;
+    private String description;
 
     public Book() {
     }
 
-    public Book(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl) {
+    public Book(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description) {
         this.id = id;
         this.title = title;
         this.version = version;
@@ -43,6 +44,15 @@ public class Book implements Serializable {
         this.isbn10 = isbn10;
         this.isbn13 = isbn13;
         this.coverImgUrl = coverImgUrl;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Chapter> getChapters() {
