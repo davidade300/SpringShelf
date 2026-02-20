@@ -204,6 +204,11 @@ public class Book implements Serializable {
         chapter.setBook(null);
     }
 
+    /**
+     * Metodo a ser chamado pelo service para atualizar um book.
+     *
+     * @param newDescription nova descricao para o capitulo
+     */
     public void updateDescription(String newDescription) {
         if (newDescription.isBlank()) throw new IllegalArgumentException("Description cannot be empty");
         this.description = newDescription;

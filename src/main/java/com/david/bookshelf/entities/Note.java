@@ -23,10 +23,6 @@ public class Note {
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
 
-    public void setChapter(Chapter chapter) {
-        this.chapter = chapter;
-    }
-
     public Note(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime lastUpdatedAt, Chapter chapter) {
         this.id = id;
         this.title = title;
@@ -83,6 +79,10 @@ public class Note {
         return chapter;
     }
 
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -95,5 +95,15 @@ public class Note {
         return Objects.hashCode(id);
     }
 
+    /**
+     * Metodo a ser chamado pelo service para atualizar uma note.
+     *
+     * @param newContent novo conteudo da note
+     */
+    public void updateContent(String newContent) {
+        if (newContent.isBlank()) throw new IllegalArgumentException("Content cannot be empty");
+        this.content = newContent;
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 
 }

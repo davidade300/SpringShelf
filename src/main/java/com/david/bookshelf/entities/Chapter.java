@@ -142,4 +142,14 @@ public class Chapter implements Serializable {
         this.notes.remove(note);
         note.setChapter(null);
     }
+
+    /**
+     *  Metodo a ser chamado pelo service para atualizar um chapter.
+     * @param newSummary novo sumario de um chapter
+     */
+    public void updateSummary(String newSummary) {
+        if (newSummary.isBlank()) throw new IllegalArgumentException("Summary cannot be empty");
+        this.summary = newSummary;
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 }
