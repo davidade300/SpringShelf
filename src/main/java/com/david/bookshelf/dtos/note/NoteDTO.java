@@ -1,6 +1,8 @@
 package com.david.bookshelf.dtos.note;
 
 
+import com.david.bookshelf.entities.Note;
+
 import java.time.LocalDateTime;
 
 public class NoteDTO {
@@ -16,6 +18,14 @@ public class NoteDTO {
         this.content = content;
         this.createdAt = createdAt;
         this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public NoteDTO(Note note) {
+        id = note.getId();
+        title = note.getTitle();
+        content = note.getContent();
+        createdAt = note.getCreatedAt();
+        lastUpdatedAt = note.getLastUpdatedAt();
     }
 
     public NoteDTO() {
