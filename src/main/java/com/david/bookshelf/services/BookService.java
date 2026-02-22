@@ -33,6 +33,7 @@ public class BookService {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Book with id " + id + " not found")
         );
+
         return new BookDTO(book);
     }
 
@@ -44,6 +45,7 @@ public class BookService {
     @Transactional(readOnly = true)
     public List<BookDTO> findAllBooks() {
         List<Book> books = bookRepository.findAll();
+
         return books.stream().map(BookDTO::new).toList();
     }
 
@@ -59,7 +61,6 @@ public class BookService {
     public List<ChapterDTO> listBookChapters(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("No book with such id found"));
-
 
         return book.getChapters().stream().map(ChapterDTO::new).toList();
     }
@@ -80,8 +81,27 @@ public class BookService {
                 .filter(c -> c.getId().equals(chapterId)).findFirst().orElseThrow(
                         () -> new IllegalArgumentException("No chapter with such id found")
                 );
-        return chapter.getNotes().stream().map(NoteDTO::new).toList();
 
+        return chapter.getNotes().stream().map(NoteDTO::new).toList();
+    }
+
+    public BookDTO addBook(BookDTO bookDTO) {
+        Book book = new Book(
+                bookDTO.getId(),
+                bookDTO.getTitle(),
+                bookDTO.getVersion(),
+                bookDTO.getReleaseDate(),
+                bookDTO.getAuthor(),
+                bookDTO.getPublisher(),
+                bookDTO.getIsbn10(),
+                bookDTO.getIsbn13(),
+                bookDTO.getCoverImgUrl(),
+                bookDTO.getDescription(),
+                bookDTO.getLastUpdatedAt());
+
+        bookRepository.save(book);
+
+        return new BookDTO(book);
     }
 
 }

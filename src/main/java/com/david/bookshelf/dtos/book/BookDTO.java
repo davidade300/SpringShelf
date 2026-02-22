@@ -20,11 +20,13 @@ public class BookDTO {
     private String isbn13;
     private String coverImgUrl;
     private String description;
+    private LocalDateTime lastUpdatedAt;
+
 
     public BookDTO() {
     }
 
-    public BookDTO(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description) {
+    public BookDTO(Long id, String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description, LocalDateTime lastUpdatedAt) {
         this.id = id;
         this.title = title;
         this.version = version;
@@ -35,6 +37,7 @@ public class BookDTO {
         this.isbn13 = isbn13;
         this.coverImgUrl = coverImgUrl;
         this.description = description;
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     /**
@@ -53,6 +56,7 @@ public class BookDTO {
         isbn13 = book.getIsbn13();
         coverImgUrl = book.getCoverImgUrl();
         description = book.getDescription();
+        lastUpdatedAt = book.getLastUpdatedAt();
     }
 
     @Override
@@ -116,4 +120,7 @@ public class BookDTO {
         return description;
     }
 
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
 }
