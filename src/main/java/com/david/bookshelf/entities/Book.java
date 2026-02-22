@@ -26,7 +26,6 @@ public class Book implements Serializable {
     private String isbn10;
     @Column(unique = true, nullable = false)
     private String isbn13;
-    @Column(name = "cover_img_url")
     private String coverImgUrl;
     @Column(columnDefinition = "TEXT")
     private String description;
