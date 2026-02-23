@@ -8,7 +8,7 @@ import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.entities.Book;
 import com.david.bookshelf.entities.Chapter;
 import com.david.bookshelf.repositories.BookRepository;
-import com.david.bookshelf.services.exceptions.ResouceNotFoundException;
+import com.david.bookshelf.services.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -151,7 +151,7 @@ public class BookService {
     protected Book loadBookByIdOrThrow(Long id) {
 
         return bookRepository.findById(id).orElseThrow(
-                () -> new ResouceNotFoundException("Book with id " + id + " not found")
+                () -> new ResourceNotFoundException("Book with id " + id + " not found")
         );
     }
 
@@ -168,7 +168,7 @@ public class BookService {
     @Transactional(readOnly = true)
     public List<ChapterDTO> listBookChapters(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResouceNotFoundException("Book with id " + id + " not found"));
+                () -> new ResourceNotFoundException("Book with id " + id + " not found"));
 
         return book.getChapters().stream().map(ChapterDTO::new).toList();
     }

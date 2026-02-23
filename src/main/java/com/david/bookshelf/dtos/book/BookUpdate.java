@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public class BookUpdate {
 
     @NotBlank
-    @Size(min = 10)
+    @Size(min = 10,  max=255)
     public String description;
 
     public BookUpdate() {
