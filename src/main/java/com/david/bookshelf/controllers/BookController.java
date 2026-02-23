@@ -4,6 +4,9 @@ import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.chapter.ChapterDTO;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +26,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookDTO> findAllBooks() {
-        return bookService.findAllBooks();
+    public ResponseEntity<Page<BookDTO>> findAllBooks(Pageable pageable) {
+        return ResponseEntity.ok(bookService.findAllBooks(pageable));
     }
 
     @GetMapping("/{bookId}")
