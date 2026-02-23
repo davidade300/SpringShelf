@@ -7,11 +7,10 @@ import com.david.bookshelf.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,9 +30,26 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    public BookDTO getBook(@PathVariable Long bookId) {
-        return bookService.findBookById(bookId);
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long bookId) {
+        BookDTO dto = bookService.findBookById(bookId);
+        return ResponseEntity.ok(dto);
     }
+
+    @PostMapping
+    public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto) {
+        BookDTO saved = bookService.insert(dto);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saved.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
+
+    }
+
 
     @GetMapping("/{bookId}/chapters")
     public List<ChapterDTO> getChapters(@PathVariable Long bookId) {

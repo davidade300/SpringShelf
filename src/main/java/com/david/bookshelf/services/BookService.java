@@ -7,7 +7,6 @@ import com.david.bookshelf.entities.Book;
 import com.david.bookshelf.entities.Chapter;
 import com.david.bookshelf.repositories.BookRepository;
 import com.david.bookshelf.services.exceptions.ResouceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -46,9 +45,7 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     public BookDTO findBookById(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResouceNotFoundException("Book with id " + id + " not found")
-        );
+        Book book = loadBookByIdOrThrow(id);
 
         return new BookDTO(book);
     }
@@ -80,17 +77,14 @@ public class BookService {
      */
     @Transactional
     public BookDTO update(Long id, BookDTO dto) {
-        try {
-            Book book = bookRepository.getReferenceById(id);
+        Book book = loadBookByIdOrThrow(id);
 
-            copyDtoToEntity(dto, book);
-            bookRepository.save(book);
+        copyDtoToEntity(dto, book);
+        bookRepository.save(book);
 
-            return new BookDTO(book);
-        } catch (EntityNotFoundException e) {
-            throw new ResouceNotFoundException("Book with id: " + id + " not found");
-        }
+        return new BookDTO(book);
     }
+
 
     /**
      * Deleta um book a partir do id
@@ -99,9 +93,7 @@ public class BookService {
      */
     @Transactional
     public void delete(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResouceNotFoundException("Book with id: " + id + " not found")
-        );
+        Book book = loadBookByIdOrThrow(id);
 
         bookRepository.deleteById(id);
     }
@@ -127,12 +119,27 @@ public class BookService {
 
     }
 
-    // Mover para o chapterService \/
+    /**
+     * Funcao para reduzir a repeticao de "Book book = bookRepository..."
+     * e para validacao em outros services já que a entidade Book e a raiz de um
+     * aggregate
+     *
+     * @param id id do book a ser retornado
+     * @return Book
+     */
+    protected Book loadBookByIdOrThrow(Long id) {
+
+        return bookRepository.findById(id).orElseThrow(
+                () -> new ResouceNotFoundException("Book with id " + id + " not found")
+        );
+    }
+
+
+// Mover para o chapterService \/
 
     /**
      * retorna uma lista de ChapterDTO para o controller
-     * TODO: Criar excecao de recurso nao encontrando, adicionar sorting no streaming
-     *  para ter uma lista ordenada (createdAt)
+     * TODO: Adicionar sorting no streaming para ter uma lista ordenada (createdAt)
      *
      * @param id id do livro que se quer consulta os capitulos
      * @return lista de ChapterDTO
