@@ -1,5 +1,11 @@
 package com.david.bookshelf.dtos.book;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,14 +13,37 @@ import java.time.LocalDateTime;
  */
 public class BookRequest {
 
+    @NotBlank
+    @Size(min = 4, max = 80)
     private String title;
+
+    @Positive
     private Integer version;
+
     private LocalDateTime releaseDate;
+
+    @NotBlank
+    @Size(min = 3, max = 80)
     private String author;
+
+    @NotBlank
+    @Size(min = 3, max = 80)
     private String publisher;
+
+    @NotBlank
+    @Size(min = 10, max = 10)
     private String isbn10;
+
+    @NotBlank
+    @Size(min = 13, max = 13)
     private String isbn13;
+
+    @NotEmpty
+    @URL
     private String coverImgUrl;
+
+    @NotBlank
+    @Size(min = 10)
     private String description;
 
     public BookRequest(String title, Integer version, LocalDateTime releaseDate, String author, String publisher, String isbn10, String isbn13, String coverImgUrl, String description) {

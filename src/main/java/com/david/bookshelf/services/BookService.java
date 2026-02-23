@@ -1,6 +1,8 @@
 package com.david.bookshelf.services;
 
 import com.david.bookshelf.dtos.book.BookDTO;
+import com.david.bookshelf.dtos.book.BookRequest;
+import com.david.bookshelf.dtos.book.BookUpdate;
 import com.david.bookshelf.dtos.chapter.ChapterDTO;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.entities.Book;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,15 +54,15 @@ public class BookService {
     }
 
     /**
-     * Cria um novo book a partir de um BookDTO
+     * Cria um novo book a partir de um BookRequest
      *
-     * @param bookDTO Dto contendo as informacoes para criar um novo book
+     * @param bookRequest BookRequest contendo as informacoes para criar um novo book
      * @return BookDTO com as informaçcoes do novo book
      */
     @Transactional
-    public BookDTO insert(BookDTO bookDTO) {
+    public BookDTO insert(BookRequest bookRequest) {
         Book book = new Book();
-        copyDtoToEntity(bookDTO, book);
+        copyBookRequestToEntity(bookRequest, book);
         bookRepository.save(book);
 
         return new BookDTO(book);
@@ -71,15 +74,15 @@ public class BookService {
      *  análisar se o front deve garantir que o objeto venha
      *  completo (a pesar de validacoes no back-end)
      *
-     * @param id  id do book a ser atualizado
-     * @param dto DTO com os dados para atualizar o book
+     * @param id         id do book a ser atualizado
+     * @param bookUpdate DTO com os dados para atualizar o book
      * @return DTO do book com os dados atualizado
      */
     @Transactional
-    public BookDTO update(Long id, BookDTO dto) {
+    public BookDTO update(Long id, BookUpdate bookUpdate) {
         Book book = loadBookByIdOrThrow(id);
 
-        copyDtoToEntity(dto, book);
+        book.updateDescription(bookUpdate.getDescription());
         bookRepository.save(book);
 
         return new BookDTO(book);
@@ -99,7 +102,8 @@ public class BookService {
     }
 
     /**
-     * Copia um BookDto para um Book
+     * TODO: Verificar se realmente nao ha nenhum uso para esse metodo
+     * Copia um BookDto para um Book, só pra nao deixar os metodos principai muito verbosos meso
      *
      * @param dto  Dto com os dados a serem passados para entidade
      * @param book Entidade a receber os dados
@@ -115,8 +119,25 @@ public class BookService {
         book.setCoverImgUrl(dto.getCoverImgUrl());
         book.setDescription(dto.getDescription());
         book.setLastUpdatedAt(dto.getLastUpdatedAt());
+    }
 
-
+    /**
+     * Copia um BookRequest para um Book, só pra nao deixar os metodos principai muito verbosos meso
+     *
+     * @param bookRequest objeto com os campos para criacao de um Book
+     * @param book        objeto Book que recebe os dados a serem persistidos
+     */
+    private void copyBookRequestToEntity(BookRequest bookRequest, Book book) {
+        book.setTitle(bookRequest.getTitle());
+        book.setVersion(bookRequest.getVersion());
+        book.setReleaseDate(bookRequest.getReleaseDate());
+        book.setAuthor(bookRequest.getAuthor());
+        book.setPublisher(bookRequest.getPublisher());
+        book.setIsbn10(bookRequest.getIsbn10());
+        book.setIsbn13(bookRequest.getIsbn13());
+        book.setCoverImgUrl(bookRequest.getCoverImgUrl());
+        book.setDescription(bookRequest.getDescription());
+        book.setLastUpdatedAt(LocalDateTime.now());
     }
 
     /**

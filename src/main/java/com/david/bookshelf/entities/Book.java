@@ -209,7 +209,8 @@ public class Book implements Serializable {
      * @param newDescription nova descricao para o capitulo
      */
     public void updateDescription(String newDescription) {
-        if (newDescription.isBlank()) throw new IllegalArgumentException("Description cannot be empty");
+        if (newDescription == null || newDescription.isBlank())
+            throw new IllegalArgumentException("Description cannot be empty");
         this.description = newDescription;
         this.lastUpdatedAt = LocalDateTime.now();
     }

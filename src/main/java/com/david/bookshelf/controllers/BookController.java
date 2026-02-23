@@ -1,9 +1,12 @@
 package com.david.bookshelf.controllers;
 
 import com.david.bookshelf.dtos.book.BookDTO;
+import com.david.bookshelf.dtos.book.BookRequest;
+import com.david.bookshelf.dtos.book.BookUpdate;
 import com.david.bookshelf.dtos.chapter.ChapterDTO;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +39,8 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO> insertBook(@RequestBody BookDTO dto) {
-        BookDTO saved = bookService.insert(dto);
+    public ResponseEntity<BookDTO> insertBook(@Valid @RequestBody BookRequest bookRequest) {
+        BookDTO saved = bookService.insert(bookRequest);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(saved.getId()).toUri();
@@ -45,10 +48,20 @@ public class BookController {
         return ResponseEntity.created(uri).body(saved);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO dto) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<BookDTO> updateBookDescription(@PathVariable Long id, @Valid @RequestBody BookUpdate bookUpdate) {
+        BookDTO updated = bookService.update(id, bookUpdate);
 
+        return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // mover para chapter ou note controller\/
 
 
     @GetMapping("/{bookId}/chapters")
