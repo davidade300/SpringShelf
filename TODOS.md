@@ -1,11 +1,14 @@
-# Lista de revisões ou ideis que avalio aplicar
+# Lista com o que falta/ tem de ser feito.
 
-## Criar um service e um controller para cada entidade
+## Services para:
 
-- (21/02/2026): como modelei Book como um aggregate root, pensei em fazer um service só, mas agora acho que isso pode
-  deixar o BookService muito grande. Caso fique, avaliar quebrar em 3 services e sempre validar de acordo. a 5 dias
-  atrás, quando li sobre aggregate root não entendi muito bem como seria a estruturação dos pacotes.
+- Chapter
+- Note
 
-> chapterService com validações pelo id do livro
+> todos os services vão usar o BookRepository, com todas as operações sendo delegadas para Book e Chapter, respeitando
+> o padrão de aggregate root.
 
-> noteService sendo avaliada pelo id do livro e id do capitulo
+## Controllers para:
+
+- Chapter
+- Note

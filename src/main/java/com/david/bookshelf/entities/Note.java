@@ -1,5 +1,6 @@
 package com.david.bookshelf.entities;
 
+import com.david.bookshelf.entities.exceptions.DomainValidationException;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -101,7 +102,7 @@ public class Note {
      * @param newContent novo conteudo da note
      */
     public void updateContent(String newContent) {
-        if (newContent.isBlank()) throw new IllegalArgumentException("Content cannot be empty");
+        if (newContent == null || newContent.isBlank()) throw new DomainValidationException("Content cannot be empty");
         this.content = newContent;
         this.lastUpdatedAt = LocalDateTime.now();
     }

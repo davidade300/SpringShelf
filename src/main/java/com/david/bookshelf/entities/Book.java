@@ -1,8 +1,9 @@
 package com.david.bookshelf.entities;
 
+import com.david.bookshelf.entities.exceptions.BusinessRuleException;
+import com.david.bookshelf.entities.exceptions.DomainValidationException;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "books")
-public class Book implements Serializable {
+public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Chapter> chapters = new HashSet<>();
@@ -176,7 +177,7 @@ public class Book implements Serializable {
         if (title == null || title.isBlank()) throw new IllegalArgumentException("Chapter title cannot be empty");
 
         if (verifyChapterTitleDuplicity(title))
-            throw new IllegalStateException("A chapter with this title alread exists in this book");
+            throw new BusinessRuleException("A chapter with this title alread exists in this book");
 
         Chapter chapter = new Chapter();
         chapter.setTitle(title);
@@ -197,7 +198,7 @@ public class Book implements Serializable {
     public void removeChapter(Long id) {
         Chapter chapter = this.chapters.stream().filter(ch -> Objects.equals(ch.getId(), id)).
                 findFirst().
-                orElseThrow(() -> new IllegalArgumentException("Chapter not found in this book"));
+                orElseThrow(() -> new DomainValidationException("Chapter not found in this book"));
 
         this.chapters.remove(chapter);
         chapter.setBook(null);
@@ -210,7 +211,7 @@ public class Book implements Serializable {
      */
     public void updateDescription(String newDescription) {
         if (newDescription == null || newDescription.isBlank())
-            throw new IllegalArgumentException("Description cannot be empty");
+            throw new DomainValidationException("Description cannot be empty");
         this.description = newDescription;
         this.lastUpdatedAt = LocalDateTime.now();
     }

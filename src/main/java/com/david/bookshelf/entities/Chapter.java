@@ -1,5 +1,6 @@
 package com.david.bookshelf.entities;
 
+import com.david.bookshelf.entities.exceptions.DomainValidationException;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -112,7 +113,7 @@ public class Chapter implements Serializable {
      */
     public Note addNote(String title, String content) {
         if (title == null || title.isBlank())
-            throw new IllegalArgumentException("Chapter title cannot be empty");
+            throw new DomainValidationException("Chapter title cannot be empty");
 
         Note note = new Note();
         note.setTitle(title);
@@ -136,7 +137,7 @@ public class Chapter implements Serializable {
         Note note = this.notes.stream().filter(nt -> Objects.equals(nt.getId(), id))
                 .findFirst()
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Note not found in this chapter")
+                        () -> new EntityNotFoundException("Note not found in this chapter")
                 );
 
         this.notes.remove(note);
@@ -144,11 +145,12 @@ public class Chapter implements Serializable {
     }
 
     /**
-     *  Metodo a ser chamado pelo service para atualizar um chapter.
+     * Metodo a ser chamado pelo service para atualizar um chapter.
+     *
      * @param newSummary novo sumario de um chapter
      */
     public void updateSummary(String newSummary) {
-        if (newSummary.isBlank()) throw new IllegalArgumentException("Summary cannot be empty");
+        if (newSummary == null || newSummary.isBlank()) throw new DomainValidationException("Summary cannot be empty");
         this.summary = newSummary;
         this.lastUpdatedAt = LocalDateTime.now();
     }
