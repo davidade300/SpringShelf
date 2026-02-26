@@ -1,8 +1,11 @@
 # Lista com o que falta/ tem de ser feito.
+
 No grande esquema das coisas, acredito que em algum momento terei de:
+
 - otimizar queries.
 - criar dtos com dtos aninhados.
 - refatorar service e controllers após essas alterações
+
 ## Services para:
 
 - Chapter
@@ -34,4 +37,9 @@ b1_0.id,b1_0.author,b1_0.cover_img_url,b1_0.description,b1_0.isbn10,b1_0.isbn13,
 > atuamentel alguns endpoints trazem só os detalhes, deixando de fora o "root" e vice versa
 
 ## Autorização e auth
+
 - para poder fazer o deploy do projeto.
+
+## Documentação:
+
+- Anotar os controllers/exception handlers com com as anotações do spring-doc-openapi openAPI

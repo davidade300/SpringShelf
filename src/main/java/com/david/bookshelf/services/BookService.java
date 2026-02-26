@@ -3,6 +3,7 @@ package com.david.bookshelf.services;
 import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.book.BookRequest;
 import com.david.bookshelf.dtos.book.BookUpdate;
+import com.david.bookshelf.dtos.book.BookWithChapters;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.entities.Book;
 import com.david.bookshelf.entities.Chapter;
@@ -50,6 +51,21 @@ public class BookService {
         Book book = loadBookByIdOrThrow(id);
 
         return new BookDTO(book);
+    }
+
+    /**
+     * FIXME: EM TESTE
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public BookWithChapters findBookWithChapters(Long id) {
+        Book book = bookRepository.findBookWithChapters(id);
+
+        return new BookWithChapters(book);
+
+
     }
 
     /**
@@ -155,7 +171,6 @@ public class BookService {
 
 
 // Mover para o chapterService \/
-
 
 
     /**

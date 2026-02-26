@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerException {
 
     /**
@@ -26,6 +28,7 @@ public class ControllerException {
      * @return ResponseEntity com status status e body de err
      */
     @ExceptionHandler(value = ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -43,6 +46,7 @@ public class ControllerException {
      * @return ResponseEntity com status status e body de err
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<CustomError> methodArgumentValidation(MethodArgumentNotValidException e,
                                                                 HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
@@ -65,6 +69,7 @@ public class ControllerException {
      * @return ResponseEntity com Status status e body de err
      */
     @ExceptionHandler(value = DomainValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<CustomError> domainValidation(DomainValidationException e,
                                                         HttpServletRequest request) {
 
@@ -86,6 +91,7 @@ public class ControllerException {
      * @return ResponseEntity com Status status e body de err
      */
     @ExceptionHandler(value = BusinessRuleException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<CustomError> businessRule(BusinessRuleException e,
                                                     HttpServletRequest request) {
 
@@ -105,6 +111,7 @@ public class ControllerException {
      * @return ResponseEntity com Status status e body de err
      */
     @ExceptionHandler(value = EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<CustomError> entityNotFound(EntityNotFoundException e,
                                                       HttpServletRequest request) {
 

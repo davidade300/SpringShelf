@@ -3,7 +3,9 @@ package com.david.bookshelf.controllers;
 import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.book.BookRequest;
 import com.david.bookshelf.dtos.book.BookUpdate;
+import com.david.bookshelf.dtos.book.BookWithChapters;
 import com.david.bookshelf.services.BookService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/books")
+@Tag(name = "Books",description = "Operacoes disponiveis para a entidade Book")
 public class BookController {
 
     private final BookService bookService;
@@ -29,12 +32,20 @@ public class BookController {
         return ResponseEntity.ok(bookService.findAllBooks(pageable));
     }
 
+    @GetMapping("with_chapters/{bookId}")
+    public ResponseEntity<BookWithChapters> getBookWithChapters(@PathVariable Long bookId) {
+        BookWithChapters dto = bookService.findBookWithChapters(bookId);
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping("/{bookId}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long bookId) {
         BookDTO dto = bookService.findBookById(bookId);
         return ResponseEntity.ok(dto);
     }
 
+    @Tag(name = "create")
+    @Tag(name = "Create Book")
     @PostMapping
     public ResponseEntity<BookDTO> insertBook(@Valid @RequestBody BookRequest bookRequest) {
         BookDTO saved = bookService.insert(bookRequest);
