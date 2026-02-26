@@ -3,7 +3,6 @@ package com.david.bookshelf.controllers;
 import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.book.BookRequest;
 import com.david.bookshelf.dtos.book.BookUpdate;
-import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.services.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/books")
@@ -27,7 +25,7 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<BookDTO>> findAllBooks(Pageable pageable) {
+    public ResponseEntity<Page<BookDTO>> getAllBooks(Pageable pageable) {
         return ResponseEntity.ok(bookService.findAllBooks(pageable));
     }
 
@@ -60,13 +58,4 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    // mover para chapter ou note controller\/
-
-
-
-
-    @GetMapping("/{bookId}/chapters/{chapterId}/notes")
-    public List<NoteDTO> getNotes(@PathVariable Long bookId, @PathVariable Long chapterId) {
-        return bookService.listChapterNotes(bookId, chapterId);
-    }
 }

@@ -96,7 +96,7 @@ public class ChapterService {
 
     /**
      * Funcao para reduzir a repeticao de "Book book = bookRepository..."
-     * e para validacao, para que um service não saiba do outro, os 3 tem essa funcao
+     * e para validacao, para que um service não saiba do outro
      *
      * @param id id do book a ser retornado
      * @return Book
@@ -108,10 +108,18 @@ public class ChapterService {
         );
     }
 
-    private Chapter loadChapterByIdOrThrow(Book book, Long chapterID) {
+    /**
+     * Funcao para reduzir a repeticao de "Chapter Chapter = book.getchapters()..."
+     * e para validacao, para que um service não saiba do outro.
+     *
+     * @param book      Book contendo o chapter a ser buscado.
+     * @param chapterId id do capitulo a ser buscado
+     * @return Chapter
+     */
+    private Chapter loadChapterByIdOrThrow(Book book, Long chapterId) {
 
         return book.getChapters().stream().filter(
-                c -> c.getId().equals(chapterID)
+                c -> c.getId().equals(chapterId)
         ).findFirst().orElseThrow(() -> new EntityNotFoundException("No chapter with such id found"));
     }
 }

@@ -1,7 +1,16 @@
 package com.david.bookshelf.dtos.note;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class NoteRequest {
+
+    @NotBlank
+    @Size(min = 3, max = 80)
     private String title;
+
+    @NotBlank
+    @Size(min = 10)
     private String content;
 
     public NoteRequest(String title, String content) {

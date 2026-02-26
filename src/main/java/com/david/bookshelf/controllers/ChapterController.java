@@ -24,7 +24,7 @@ public class ChapterController {
 
 
     @GetMapping("/{chapterId}")
-    public ResponseEntity<ChapterDTO> findChapterById(@PathVariable Long bookId, @PathVariable Long chapterId) {
+    public ResponseEntity<ChapterDTO> getChapterById(@PathVariable Long bookId, @PathVariable Long chapterId) {
         ChapterDTO chapter = chapterService.findChapterById(bookId, chapterId);
 
         return ResponseEntity.ok(chapter);
