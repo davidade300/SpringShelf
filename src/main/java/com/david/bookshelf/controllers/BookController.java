@@ -3,7 +3,6 @@ package com.david.bookshelf.controllers;
 import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.book.BookRequest;
 import com.david.bookshelf.dtos.book.BookUpdate;
-import com.david.bookshelf.dtos.chapter.ChapterDTO;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.services.BookService;
 import jakarta.validation.Valid;
@@ -64,10 +63,7 @@ public class BookController {
     // mover para chapter ou note controller\/
 
 
-    @GetMapping("/{bookId}/chapters")
-    public List<ChapterDTO> getChapters(@PathVariable Long bookId) {
-        return bookService.listBookChapters(bookId);
-    }
+
 
     @GetMapping("/{bookId}/chapters/{chapterId}/notes")
     public List<NoteDTO> getNotes(@PathVariable Long bookId, @PathVariable Long chapterId) {

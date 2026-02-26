@@ -3,7 +3,6 @@ package com.david.bookshelf.services;
 import com.david.bookshelf.dtos.book.BookDTO;
 import com.david.bookshelf.dtos.book.BookRequest;
 import com.david.bookshelf.dtos.book.BookUpdate;
-import com.david.bookshelf.dtos.chapter.ChapterDTO;
 import com.david.bookshelf.dtos.note.NoteDTO;
 import com.david.bookshelf.entities.Book;
 import com.david.bookshelf.entities.Chapter;
@@ -142,13 +141,12 @@ public class BookService {
 
     /**
      * Funcao para reduzir a repeticao de "Book book = bookRepository..."
-     * e para validacao em outros services já que a entidade Book e a raiz de um
-     * aggregate
+     * e para validacao, para que um service não saiba do outro, os 3 tem essa funcao
      *
      * @param id id do book a ser retornado
      * @return Book
      */
-    protected Book loadBookByIdOrThrow(Long id) {
+    private Book loadBookByIdOrThrow(Long id) {
 
         return bookRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Book with id " + id + " not found")
@@ -158,20 +156,7 @@ public class BookService {
 
 // Mover para o chapterService \/
 
-    /**
-     * retorna uma lista de ChapterDTO para o controller
-     * TODO: Adicionar sorting no streaming para ter uma lista ordenada (createdAt)
-     *
-     * @param id id do livro que se quer consulta os capitulos
-     * @return lista de ChapterDTO
-     */
-    @Transactional(readOnly = true)
-    public List<ChapterDTO> listBookChapters(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Book with id " + id + " not found"));
 
-        return book.getChapters().stream().map(ChapterDTO::new).toList();
-    }
 
     /**
      * Lista as notas de um capitulo a partir do id de um livro e do id de um capitulo do livro

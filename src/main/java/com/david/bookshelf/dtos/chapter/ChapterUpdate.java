@@ -1,8 +1,13 @@
 package com.david.bookshelf.dtos.chapter;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 public class ChapterUpdate {
+    @Size(min = 10, max = 255)
+    @NotBlank
     String summary;
 
     public ChapterUpdate() {
