@@ -54,18 +54,15 @@ public class BookService {
     }
 
     /**
-     * FIXME: EM TESTE
      *
-     * @param id
-     * @return
+     * @param id id do Book que se quer ver com chapters
+     * @return DTO BookWithChapters (book com os seus chapters aninhados
      */
     @Transactional(readOnly = true)
     public BookWithChapters findBookWithChapters(Long id) {
         Book book = bookRepository.findBookWithChapters(id);
 
         return new BookWithChapters(book);
-
-
     }
 
     /**
