@@ -1,41 +1,35 @@
 package com.david.bookshelf.security;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
 
-    private final JwtEncoder encoder;
+    private JwtEncoder jwtEncoder;
 
-    public JwtService(JwtEncoder encoder) {
-        this.encoder = encoder;
+    public JwtService(JwtEncoder jwtEncoder) {
+        this.jwtEncoder = jwtEncoder;
     }
 
     public String generateToken(Authentication authentication) {
+        String name = authentication.getName();
         Instant now = Instant.now();
-        long expiry = 3600L;
-
-        String scopes = authentication.getAuthorities()
-                .stream().map(GrantedAuthority::getAuthority)
-
-                .collect(Collectors.joining(" "));
-
-        var claims = JwtClaimsSet.builder()
+        Instant expiration = now.plusSeconds(3600);
+        JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("bookshelf")
+                .subject(name)
                 .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiry))
-                .subject(authentication.getName())
-                .claim("scope", scopes)
+                .expiresAt(expiration)
                 .build();
 
-        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
+
+
 }
